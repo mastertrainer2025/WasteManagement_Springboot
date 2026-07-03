@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="fw-bold text-success m-0"><i class="bi bi-bar-chart-line-fill me-2"></i>Analytical Reports</h2>
+            <p class="text-secondary mb-0">Evaluate waste distribution profiles, track complaint resolutions, and analyze performance trends.</p>
+        </div>
+    </div>
+
+    <input type="hidden" id="organicData" th:value="${organicCount}">
+    <input type="hidden" id="recyclableData" th:value="${recyclableCount}">
+    <input type="hidden" id="hazardousData" th:value="${hazardousCount}">
+    <input type="hidden" id="bulkyData" th:value="${bulkyCount}">
+
+    <input type="hidden" id="reportedIssuesData" th:value="${reportedIssues}">
+    <input type="hidden" id="investigatingIssuesData" th:value="${investigatingIssues}">
+    <input type="hidden" id="resolvedIssuesData" th:value="${resolvedIssues}">
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card card-eco p-4">
+                <h5 class="fw-bold mb-2 text-success">Waste Composition (Completed Pickups)</h5>
+                <p class="text-secondary small">Volume breakdown based on successful citizen collection requests.</p>
+                <div class="chart-container" style="position: relative; height:300px;">
+                    <canvas id="wasteChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card card-eco p-4">
+                <h5 class="fw-bold mb-2 text-success">Citizen Complaints Status</h5>
+                <p class="text-secondary small">Resolution rate tracking for issues (overfilled bins, blocked roads, etc.)</p>
+                <div class="chart-container" style="position: relative; height:300px;">
+                    <canvas id="issuesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const organic = parseInt(document.getElementById('organicData').value) || 0;
+            const recyclable = parseInt(document.getElementById('recyclableData').value) || 0;
+            const hazardous = parseInt(document.getElementById('hazardousData').value) || 0;
+            const bulky = parseInt(document.getElementById('bulkyData').value) || 0;
+
+            const ctxWaste = document.getElementById('wasteChart').getContext('2d');
+            new Chart(ctxWaste, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Organic', 'Recyclable', 'Hazardous', 'Bulky'],
+                    datasets: [{
+                        label: 'Collections',
+                        data: [organic, recyclable, hazardous, bulky],
+                        backgroundColor: [
+                            '#4CAF50',
+                            '#2196F3',
+                            '#F44336',
+                            '#FF9800'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            const reported = parseInt(document.getElementById('reportedIssuesData').value) || 0;
+            const investigating = parseInt(document.getElementById('investigatingIssuesData').value) || 0;
+            const resolved = parseInt(document.getElementById('resolvedIssuesData').value) || 0;
+
+            const ctxIssues = document.getElementById('issuesChart').getContext('2d');
+            new Chart(ctxIssues, {
+                type: 'bar',
+                data: {
+                    labels: ['Unassigned (Reported)', 'Assigned (Investigating)', 'Resolved'],
+                    datasets: [{
+                        label: 'Complaints count',
+                        data: [reported, investigating, resolved],
+                        backgroundColor: [
+                            '#FFC107',
+                            '#17A2B8',
+                            '#28A745'
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</main>
+</body>
+</html>

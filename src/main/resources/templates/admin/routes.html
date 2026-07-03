@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold text-success m-0"><i class="bi bi-map-fill me-2"></i>Schedules &amp; Routes</h2>
+            <p class="text-secondary mb-0">Define recurring weekly waste routes, assign collection crews, and toggle schedule configurations.</p>
+        </div>
+    </div>
+
+    <div th:if="${param.success == 'route_created'}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> New route schedule has been configured and assigned to staff.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.success == 'route_updated'}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Route schedule active status has been updated.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.success == 'route_deleted'}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Route schedule deleted successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card card-eco p-4">
+                <h5 class="fw-bold mb-3 text-success">Municipal Collection Schedules</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead>
+                            <tr>
+                                <th>Route Name</th>
+                                <th>Scheduled Day</th>
+                                <th>Waste Type</th>
+                                <th>Assigned Staff</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="r : ${routes}">
+                                <td><strong th:text="${r.routeName}">Route Alpha</strong></td>
+                                <td th:text="${r.scheduledDay}">Monday</td>
+                                <td>
+                                    <span class="badge bg-success bg-opacity-10 text-success text-uppercase small" th:text="${r.wasteType}">ORGANIC</span>
+                                </td>
+                                <td>
+                                    <span th:text="${r.assignedStaff != null ? r.assignedStaff.name : 'Unassigned'}">Robert</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success" th:if="${r.active}">Active</span>
+                                    <span class="badge bg-secondary" th:if="${!r.active}">Suspended</span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <form th:action="@{/admin/routes/{id}/toggle-status(id=${r.id})}" method="post" class="m-0">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;">
+                                                Toggle Active
+                                            </button>
+                                        </form>
+                                        <form th:action="@{/admin/routes/{id}/delete(id=${r.id})}" method="post" class="m-0">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 0.75rem;" onclick="return confirm('Are you sure you want to delete this route schedule?')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card card-eco p-4">
+                <h5 class="fw-bold mb-3 text-success"><i class="bi bi-plus-circle-fill me-2"></i>Configure Route</h5>
+                <p class="text-secondary small mb-3">Add a new weekly collection cycle for a sector or community zone.</p>
+
+                <form th:action="@{/admin/routes/create}" th:object="${newRoute}" method="post">
+                    <div class="mb-2">
+                        <label for="routeName" class="form-label small fw-semibold text-secondary mb-1">Route &amp; Zone Name</label>
+                        <input type="text" class="form-control form-control-sm" id="routeName" th:field="*{routeName}" placeholder="e.g. Route Gamma - Sector 4" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="wasteType" class="form-label small fw-semibold text-secondary mb-1">Waste Category</label>
+                        <select id="wasteType" th:field="*{wasteType}" class="form-select form-select-sm" required>
+                            <option th:each="type : ${wasteTypes}" th:value="${type}" th:text="${type}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label for="scheduledDay" class="form-label small fw-semibold text-secondary mb-1">Scheduled Day</label>
+                        <select id="scheduledDay" th:field="*{scheduledDay}" class="form-select form-select-sm" required>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="staffId" class="form-label small fw-semibold text-secondary mb-1">Assign Collection Crew</label>
+                        <select id="staffId" name="staffId" class="form-select form-select-sm" required>
+                            <option value="" disabled selected>Select Staff...</option>
+                            <option th:each="staff : ${staffMembers}" th:value="${staff.id}" th:text="${staff.name}"></option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-eco btn-sm w-100 py-2"><i class="bi bi-save me-1"></i>Deploy Route Schedule</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

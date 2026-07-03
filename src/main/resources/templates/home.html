@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="hero-section text-center text-md-start">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <span class="badge bg-success mb-3 px-3 py-2 text-uppercase fw-semibold" style="letter-spacing: 1px;">Smart Municipal Waste Management</span>
+                <h1 class="hero-title mb-3">Keep Our City Clean, Green &amp; Sustainable</h1>
+                <p class="lead mb-4 text-secondary">Manage waste pickups, report overfilled public bins, and learn professional recycling practices to build a cleaner future together.</p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+                    <a th:href="@{/register}" class="btn btn-eco px-4 py-2">Get Started</a>
+                    <a th:href="@{/login}" class="btn btn-eco-outline px-4 py-2">Sign In Portal</a>
+                </div>
+            </div>
+            <div class="col-md-5 d-none d-md-block text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="380" height="380">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#81C784;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="250" cy="250" r="220" fill="url(#grad1)" opacity="0.1" />
+                    <circle cx="250" cy="250" r="150" fill="none" stroke="#2E7D32" stroke-width="4" stroke-dasharray="10 5" />
+                    <path d="M250,150 C290,190 310,230 250,330 C190,230 210,190 250,150 Z" fill="#2E7D32" />
+                    <path d="M250,150 L250,330" stroke="#FFF" stroke-width="3" />
+                    <path d="M250,220 C270,210 280,200 285,190" stroke="#FFF" stroke-width="3" fill="none" />
+                    <path d="M250,260 C230,250 220,240 215,230" stroke="#FFF" stroke-width="3" fill="none" />
+                    <path d="M150,380 C180,350 220,340 250,340 C280,340 320,350 350,380" fill="none" stroke="#00796B" stroke-width="8" stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5 text-center g-4">
+        <div class="col-md-4">
+            <div class="card card-eco h-100 p-4">
+                <div class="mb-3">
+                    <span class="p-3 bg-success bg-opacity-10 rounded-circle d-inline-block text-success">
+                        <i class="bi bi-people-fill fs-3"></i>
+                    </span>
+                </div>
+                <h4 class="fw-bold mb-2">For Citizens</h4>
+                <p class="text-secondary small">Register accounts, submit residential/commercial bulk waste collection requests, file municipal complaints, and track resolutions.</p>
+                <a th:href="@{/register}" class="btn btn-sm btn-eco mt-auto">Citizen Register</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-eco h-100 p-4">
+                <div class="mb-3">
+                    <span class="p-3 bg-info bg-opacity-10 rounded-circle d-inline-block text-info">
+                        <i class="bi bi-truck fs-3"></i>
+                    </span>
+                </div>
+                <h4 class="fw-bold mb-2">Collection Staff</h4>
+                <p class="text-secondary small">Check daily schedules and assigned routes. Report on-route blockages or overfilled trash cans with physical notes and uploaded image verification.</p>
+                <a th:href="@{/login}" class="btn btn-sm btn-eco-outline mt-auto">Staff Portal Login</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-eco h-100 p-4">
+                <div class="mb-3">
+                    <span class="p-3 bg-dark bg-opacity-10 rounded-circle d-inline-block text-dark">
+                        <i class="bi bi-shield-lock-fill fs-3"></i>
+                    </span>
+                </div>
+                <h4 class="fw-bold mb-2">Municipal Admin</h4>
+                <p class="text-secondary small">Supervise municipal tasks. Manage schedules, route staff dynamically, review community reports, and extract data-driven analytical insights.</p>
+                <a th:href="@{/login}" class="btn btn-sm btn-eco-outline mt-auto">Admin Panel</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-5 bg-white rounded-4 p-4 shadow-sm">
+        <div class="col-lg-5 mb-4 mb-lg-0">
+            <span class="badge bg-primary mb-2 px-3 py-2">Sort &amp; Learn</span>
+            <h3 class="fw-bold text-success mb-3">Waste Segregation Challenge</h3>
+            <p class="text-secondary">Testing your eco-knowledge! Drag the garbage item displayed in the box and drop it into the correct category bin below. Proper segregation prevents landfills from toxic pollution and fuels recycling.</p>
+            <div class="mt-4 p-3 bg-light rounded-3 border-start border-success border-4">
+                <h6 class="fw-bold mb-1">How it helps:</h6>
+                <p class="small text-secondary m-0">Organic waste goes for compost; recyclables are transformed; hazardous wastes require professional isolation.</p>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="game-container bg-light border border-2 rounded-4 text-center py-5">
+                <h5 class="fw-bold text-dark mb-4">Drag This Item:</h5>
+                <div id="game-item" class="game-item shadow-sm mb-4" draggable="true">Loading Item...</div>
+                
+                <div id="game-feedback" class="mb-4 small">&nbsp;</div>
+
+                <div class="row g-2 justify-content-center px-3">
+                    <div class="col-6 col-md-3">
+                        <div class="game-bin bin-organic" data-type="ORGANIC">
+                            <i class="bi bi-tree-fill fs-2 mb-2"></i>
+                            <div>Organic</div>
+                            <span class="small opacity-75">(Green Bins)</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="game-bin bin-recyclable" data-type="RECYCLABLE">
+                            <i class="bi bi-arrow-repeat fs-2 mb-2"></i>
+                            <div>Recyclable</div>
+                            <span class="small opacity-75">(Blue Bins)</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="game-bin bin-hazardous" data-type="HAZARDOUS">
+                            <i class="bi bi-exclamation-triangle-fill fs-2 mb-2"></i>
+                            <div>Hazardous</div>
+                            <span class="small opacity-75">(Red Bins)</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="game-bin bin-bulky" data-type="BULKY">
+                            <i class="bi bi-box-fill fs-2 mb-2"></i>
+                            <div>Bulky</div>
+                            <span class="small opacity-75">(Orange Bins)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h6 class="fw-bold text-secondary m-0">Your Score: <span id="game-score" class="text-success fs-5">0</span> points</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

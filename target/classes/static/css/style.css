@@ -1,0 +1,335 @@
+/* Eco-Tech Design System Style */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary-color: #2E7D32;
+    --primary-hover: #1B5E20;
+    --primary-light: #E8F5E9;
+    --secondary-color: #00796B;
+    --secondary-hover: #004D40;
+    --dark-color: #212121;
+    --light-color: #F8F9FA;
+    --accent-color: #81C784;
+    --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: #F4F6F4;
+    color: var(--dark-color);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+/* Navbar */
+.navbar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.navbar-brand {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    color: var(--primary-color) !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.4rem;
+}
+
+.navbar-brand svg {
+    fill: var(--primary-color);
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--dark-color) !important;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color) !important;
+    transform: translateY(-1px);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    border-radius: 24px;
+    padding: 80px 40px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(46, 125, 50, 0.05);
+    border-radius: 50%;
+    bottom: -100px;
+    right: -50px;
+}
+
+.hero-title {
+    font-weight: 800;
+    font-size: 3rem;
+    color: var(--primary-hover);
+    line-height: 1.2;
+}
+
+/* Cards */
+.card-eco {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card-eco:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Custom Buttons */
+.btn-eco {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-eco:hover {
+    background-color: var(--primary-hover);
+    color: white;
+    transform: scale(1.02);
+}
+
+.btn-eco-outline {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 10px;
+    padding: 8px 22px;
+    font-weight: 600;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.btn-eco-outline:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Timeline/Progress Bar */
+.timeline-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin: 30px 0;
+}
+
+.timeline-steps::before {
+    content: '';
+    position: absolute;
+    height: 4px;
+    background: #E0E0E0;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.timeline-step {
+    position: relative;
+    z-index: 2;
+    background: #F4F6F4;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #E0E0E0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: 3px solid white;
+    transition: all 0.3s ease;
+}
+
+.timeline-step.completed .step-indicator {
+    background: var(--primary-color);
+    color: white;
+}
+
+.timeline-step.active .step-indicator {
+    background: var(--secondary-color);
+    color: white;
+    box-shadow: 0 0 0 5px rgba(0, 121, 107, 0.2);
+}
+
+.step-label {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #777;
+}
+
+.timeline-step.completed .step-label {
+    color: var(--primary-color);
+}
+
+.timeline-step.active .step-label {
+    color: var(--secondary-color);
+}
+
+/* Waste Segregation Game */
+.game-container {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+}
+
+.game-item {
+    padding: 12px 20px;
+    background: #E8F5E9;
+    border: 2px dashed var(--primary-color);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary-hover);
+    display: inline-block;
+    cursor: grab;
+    transition: transform 0.2s;
+    user-select: none;
+}
+
+.game-item:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.game-bin {
+    border-radius: 16px;
+    padding: 25px 15px;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    border: 3px solid transparent;
+}
+
+.game-bin.drag-over {
+    transform: scale(1.05);
+    border-color: #FFF;
+}
+
+.bin-organic { background-color: #4CAF50; }
+.bin-recyclable { background-color: #2196F3; }
+.bin-hazardous { background-color: #F44336; }
+.bin-bulky { background-color: #FF9800; }
+
+/* Dashboard Widgets */
+.stat-widget {
+    padding: 24px;
+    border-radius: 16px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-widget::before {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    right: -40px;
+    top: -40px;
+}
+
+.bg-widget-1 { background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%); }
+.bg-widget-2 { background: linear-gradient(135deg, #00796B 0%, #004D40 100%); }
+.bg-widget-3 { background: linear-gradient(135deg, #F57C00 0%, #E65100 100%); }
+.bg-widget-4 { background: linear-gradient(135deg, #D32F2F 0%, #C62828 100%); }
+
+/* Glass Login / Register */
+.auth-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1470&auto=format&fit=crop') no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    max-width: 450px;
+    width: 100%;
+}
+
+/* Notifications Box */
+.notification-item {
+    border-left: 4px solid #E0E0E0;
+    transition: all 0.2s ease;
+}
+.notification-item.unread {
+    border-left-color: var(--primary-color);
+    background-color: var(--primary-light);
+}
+.notification-item:hover {
+    background-color: rgba(0,0,0,0.01);
+}
+
+/* Footer styling */
+footer {
+    background: #1B5E20;
+    color: #E8F5E9;
+    padding: 40px 0;
+    margin-top: 80px;
+}
+footer a {
+    color: #A5D6A7;
+    text-decoration: none;
+}
+footer a:hover {
+    color: white;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card card-eco p-4">
+                <div class="mb-3">
+                    <a th:href="@{/citizen/dashboard}" class="text-success text-decoration-none small fw-semibold">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+                <h3 class="fw-bold text-success mb-3"><i class="bi bi-exclamation-triangle me-2"></i>Report Municipal Issue</h3>
+                <p class="text-secondary small mb-4">Spotted a blocked road, overfilled container, or uncollected trash? Report it immediately to alert our collection staff.</p>
+
+                <form th:action="@{/citizen/issue}" th:object="${issueReport}" method="post">
+                    
+                    <div class="mb-3">
+                        <label for="issueType" class="form-label small fw-semibold text-secondary">Issue Type</label>
+                        <select class="form-select" id="issueType" th:field="*{issueType}" required>
+                            <option value="" disabled selected>Select issue category...</option>
+                            <option th:each="type : ${issueTypes}" th:value="${type}" th:text="${#strings.replace(type, '_', ' ')}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location" class="form-label small fw-semibold text-secondary">Location of the Issue</label>
+                        <input type="text" class="form-control" id="location" th:field="*{location}" placeholder="e.g. Sector 3 market lane, near gate 2" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="description" class="form-label small fw-semibold text-secondary">Detailed Description</label>
+                        <textarea class="form-control" id="description" th:field="*{description}" rows="4" placeholder="Explain the problem (e.g. green container has been overflowing for 2 days...)" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-eco w-100 py-2">Submit Issue Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

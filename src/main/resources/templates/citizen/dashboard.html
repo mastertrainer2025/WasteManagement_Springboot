@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold text-success m-0">Citizen Dashboard</h2>
+            <p class="text-secondary mb-0">Welcome back, <span th:text="${user.name}">John Doe</span>. Manage your requests and alerts here.</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-md-end">
+            <a th:href="@{/citizen/request}" class="btn btn-eco"><i class="bi bi-calendar-plus me-2"></i>Request Pickup</a>
+            <a th:href="@{/citizen/issue}" class="btn btn-eco-outline"><i class="bi bi-exclamation-triangle me-2"></i>Report Issue</a>
+        </div>
+    </div>
+
+    <div th:if="${param.pickupSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Your waste collection pickup request was submitted. Track status below.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.issueSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Your municipal issue was reported successfully. Our team will review it shortly.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card card-eco p-4 mb-4">
+                <h4 class="fw-bold mb-3"><i class="bi bi-calendar-check text-success me-2"></i>Waste Pickup Requests</h4>
+                
+                <div th:if="${pickups.isEmpty()}" class="text-center py-4">
+                    <i class="bi bi-inbox text-muted fs-1"></i>
+                    <p class="text-secondary mt-2">You haven't requested any pickups yet.</p>
+                </div>
+
+                <div th:each="pickup : ${pickups}" class="border rounded-3 p-3 mb-3 bg-light bg-opacity-50">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                        <div>
+                            <span class="badge bg-success bg-opacity-10 text-success text-uppercase small" th:text="${pickup.wasteType}">ORGANIC</span>
+                            <span class="text-muted small ms-2" th:text="${'Requested: ' + #temporals.format(pickup.requestedDate, 'yyyy-MM-dd HH:mm')}">2026-07-03</span>
+                            <p class="fw-semibold m-0 mt-2" th:text="${pickup.pickupAddress}">123 Eco Street</p>
+                            <p class="small text-secondary m-0" th:text="${'Notes: ' + (pickup.notes != null &amp;&amp; !pickup.notes.isEmpty() ? pickup.notes : 'None')}">Notes text</p>
+                        </div>
+                        <div class="text-end">
+                            <span th:if="${pickup.status.name() == 'PENDING'}" class="badge bg-warning text-dark">PENDING ASSIGNMENT</span>
+                            <span th:if="${pickup.status.name() == 'ASSIGNED'}" class="badge bg-info text-dark">ASSIGNED</span>
+                            <span th:if="${pickup.status.name() == 'COMPLETED'}" class="badge bg-success">COMPLETED</span>
+                            <span th:if="${pickup.status.name() == 'CANCELLED'}" class="badge bg-danger">CANCELLED</span>
+                            
+                            <div th:if="${pickup.status.name() == 'COMPLETED'}" class="mt-2">
+                                <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" data-bs-toggle="modal" th:data-bs-target="${'#proofModal' + pickup.id}">
+                                    View Proof
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${pickup.status.name() != 'CANCELLED'}" class="timeline-steps">
+                        <div class="timeline-step completed">
+                            <div class="step-indicator">1</div>
+                            <span class="step-label">Requested</span>
+                        </div>
+                        <div class="timeline-step" th:classappend="${pickup.status.name() == 'ASSIGNED' || pickup.status.name() == 'COMPLETED' ? 'completed' : ''}">
+                            <div class="step-indicator">2</div>
+                            <span class="step-label">Scheduled</span>
+                        </div>
+                        <div class="timeline-step" th:classappend="${pickup.status.name() == 'COMPLETED' ? 'completed' : ''}">
+                            <div class="step-indicator">3</div>
+                            <span class="step-label">Collected</span>
+                        </div>
+                    </div>
+
+                    <div class="small text-secondary mt-2 border-top pt-2 d-flex justify-content-between flex-wrap gap-2" th:if="${pickup.assignedStaff != null}">
+                        <span><i class="bi bi-person-badge me-1"></i>Collector: <strong th:text="${pickup.assignedStaff.name}">Robert</strong></span>
+                        <span><i class="bi bi-calendar-event me-1"></i>Scheduled Date: <strong th:text="${pickup.scheduledDate}">2026-07-05</strong></span>
+                    </div>
+
+                    <div th:if="${pickup.status.name() == 'COMPLETED'}" class="modal fade" th:id="${'proofModal' + pickup.id}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold text-success"><i class="bi bi-patch-check-fill me-2"></i>Collection Verification</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    <div class="mb-3" th:if="${pickup.collectionProofImage != null}">
+                                        <img th:src="${pickup.collectionProofImage}" class="img-fluid rounded border w-100" style="max-height: 250px; object-fit: cover;" alt="Collection Proof">
+                                    </div>
+                                    <h6 class="fw-bold mb-1">Collector Notes:</h6>
+                                    <p class="text-secondary small" th:text="${pickup.collectionProofNotes != null ? pickup.collectionProofNotes : 'No notes left by collector.'}"></p>
+                                    <div class="small text-muted border-top pt-2">
+                                        Collected by: <span th:text="${pickup.assignedStaff.name}">Robert</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card card-eco p-4">
+                <h4 class="fw-bold mb-3"><i class="bi bi-exclamation-triangle text-success me-2"></i>Your Reported Issues</h4>
+                
+                <div th:if="${issues.isEmpty()}" class="text-center py-4">
+                    <i class="bi bi-check-circle text-muted fs-1"></i>
+                    <p class="text-secondary mt-2">No reported issues. Thank you for keeping the city clean!</p>
+                </div>
+
+                <div th:each="issue : ${issues}" class="border rounded-3 p-3 mb-3 bg-light bg-opacity-50">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                        <div>
+                            <span class="badge bg-danger bg-opacity-10 text-danger text-uppercase small" th:text="${issue.issueType}">OVERFILLED_BIN</span>
+                            <span class="text-muted small ms-2" th:text="${'Reported: ' + #temporals.format(issue.reportedDate, 'yyyy-MM-dd HH:mm')}">2026-07-03</span>
+                            <p class="fw-semibold m-0 mt-2" th:text="${issue.location}">Sector 3</p>
+                            <p class="small text-secondary m-0" th:text="${issue.description}">Description text</p>
+                        </div>
+                        <div class="text-end">
+                            <span th:if="${issue.status.name() == 'REPORTED'}" class="badge bg-warning text-dark">REPORTED</span>
+                            <span th:if="${issue.status.name() == 'INVESTIGATING'}" class="badge bg-info text-dark">INVESTIGATING</span>
+                            <span th:if="${issue.status.name() == 'RESOLVED'}" class="badge bg-success">RESOLVED</span>
+                        </div>
+                    </div>
+
+                    <div class="small text-secondary mt-2 border-top pt-2 d-flex justify-content-between flex-wrap gap-2" th:if="${issue.assignedStaff != null}">
+                        <span><i class="bi bi-person-badge me-1"></i>Assigned Staff: <strong th:text="${issue.assignedStaff.name}">Robert</strong></span>
+                    </div>
+                    
+                    <div class="small bg-white p-2 rounded border mt-2" th:if="${issue.status.name() == 'RESOLVED' &amp;&amp; issue.resolutionNotes != null}">
+                        <strong class="text-success"><i class="bi bi-check2-circle me-1"></i>Resolution Notes:</strong>
+                        <p class="m-0 text-secondary small" th:text="${issue.resolutionNotes}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card card-eco p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold m-0"><i class="bi bi-bell text-success me-2"></i>Notifications</h4>
+                    <span th:if="${unreadCount > 0}" class="badge bg-danger rounded-pill" th:text="${unreadCount}">2</span>
+                </div>
+
+                <form th:action="@{/citizen/notifications/read}" method="post" class="mb-3" th:if="${unreadCount > 0}">
+                    <button type="submit" class="btn btn-sm btn-outline-success w-100 py-1">Mark all as read</button>
+                </form>
+
+                <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                    <div th:if="${notifications.isEmpty()}" class="text-center py-4">
+                        <i class="bi bi-bell-slash text-muted fs-2"></i>
+                        <p class="text-secondary small mt-2">No alerts or tips currently.</p>
+                    </div>
+                    
+                    <div th:each="n : ${notifications}" class="list-group-item px-2 py-3 notification-item" th:classappend="${n.recipient != null &amp;&amp; !n.read ? 'unread' : ''}">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="fw-bold mb-1 small" th:text="${n.title}">Notification Title</h6>
+                            <span class="text-muted small" style="font-size: 0.75rem;" th:text="${#temporals.format(n.createdDate, 'MMM dd')}">Jul 03</span>
+                        </div>
+                        <p class="text-secondary mb-0 small" th:text="${n.content}">Alert details text</p>
+                        <span th:if="${n.recipient == null}" class="badge bg-success bg-opacity-10 text-success py-0 px-2 mt-1" style="font-size: 0.65rem;">PUBLIC AWARENESS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

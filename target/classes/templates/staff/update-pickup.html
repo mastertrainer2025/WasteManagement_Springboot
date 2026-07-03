@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card card-eco p-4">
+                <div class="mb-3">
+                    <a th:href="@{/staff/dashboard}" class="text-success text-decoration-none small fw-semibold">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+                
+                <span class="badge bg-success bg-opacity-10 text-success text-uppercase small align-self-start mb-2" th:text="${pickup.wasteType}">ORGANIC</span>
+                <h3 class="fw-bold text-success mb-1"><i class="bi bi-check-circle me-2"></i>Verify &amp; Complete Pickup</h3>
+                <p class="text-secondary small mb-4">Complete this collection request by uploading a photo proof and adding verification notes.</p>
+
+                <div class="bg-light p-3 rounded mb-4 small text-secondary">
+                    <div><span class="fw-semibold text-dark">Address:</span> <span th:text="${pickup.pickupAddress}">123 Eco St</span></div>
+                    <div><span class="fw-semibold text-dark">Citizen Name:</span> <span th:text="${pickup.citizen.name}">John Doe</span></div>
+                    <div th:if="${pickup.notes != null &amp;&amp; !pickup.notes.isEmpty()}"><span class="fw-semibold text-dark">Citizen Notes:</span> <span th:text="${pickup.notes}">Notes text</span></div>
+                </div>
+
+                <form th:action="@{/staff/pickup/{id}/complete(id=${pickup.id})}" method="post">
+                    
+                    <div class="mb-3">
+                        <label for="collectionProofNotes" class="form-label small fw-semibold text-secondary">Collection Proof Notes</label>
+                        <textarea class="form-control" name="collectionProofNotes" id="collectionProofNotes" rows="3" placeholder="Enter collection notes (e.g. Cleared 2 plastic tubs, left the area clean)" required></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="collectionImageFile" class="form-label small fw-semibold text-secondary">Upload Proof Image (Optional)</label>
+                        <input class="form-control" type="file" id="collectionImageFile" accept="image/*">
+                        <input type="hidden" id="collectionProofImageBase64" name="collectionProofImage" value="">
+                        
+                        <div class="mt-3 text-center">
+                            <img id="collectionImagePreview" src="" class="img-fluid rounded border d-none shadow-sm" style="max-height: 200px; object-fit: contain;" alt="Proof Image Preview">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-eco w-100 py-2">Mark Pickup Completed</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

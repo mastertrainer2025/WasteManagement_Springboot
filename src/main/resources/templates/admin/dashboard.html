@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <span class="badge bg-success mb-1">Municipal Operations Control</span>
+            <h2 class="fw-bold text-success m-0">Administrator Control Center</h2>
+            <p class="text-secondary mb-0">Monitor city operations, delegate tasks to collection crews, and broadcast updates.</p>
+        </div>
+    </div>
+
+    <div th:if="${param.success == 'pickup_assigned'}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Pickup request has been scheduled and assigned to the selected crew.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.success == 'issue_assigned'}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Issue complaint has been assigned to the selected staff member.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.success == 'broadcast_sent'}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Public awareness announcement has been broadcasted to all citizens.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-6 col-lg-3">
+            <div class="stat-widget bg-widget-1 shadow-sm">
+                <div class="small fw-semibold opacity-75">Registered Citizens</div>
+                <h2 class="fw-bold m-0 mt-1" th:text="${citizenCount}">10</h2>
+                <i class="bi bi-people position-absolute opacity-25" style="right: 20px; bottom: 20px; font-size: 3rem;"></i>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-widget bg-widget-2 shadow-sm">
+                <div class="small fw-semibold opacity-75">Collection Staff</div>
+                <h2 class="fw-bold m-0 mt-1" th:text="${staffCount}">3</h2>
+                <i class="bi bi-truck position-absolute opacity-25" style="right: 20px; bottom: 20px; font-size: 3rem;"></i>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-widget bg-widget-3 shadow-sm">
+                <div class="small fw-semibold opacity-75">Pending Pickups</div>
+                <h2 class="fw-bold m-0 mt-1" th:text="${pendingPickupsCount}">2</h2>
+                <i class="bi bi-clock-history position-absolute opacity-25" style="right: 20px; bottom: 20px; font-size: 3rem;"></i>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-widget bg-widget-4 shadow-sm">
+                <div class="small fw-semibold opacity-75">Active Complaints</div>
+                <h2 class="fw-bold m-0 mt-1" th:text="${unresolvedIssuesCount}">1</h2>
+                <i class="bi bi-exclamation-octagon position-absolute opacity-25" style="right: 20px; bottom: 20px; font-size: 3rem;"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card card-eco p-4 mb-4 shadow-sm border-0">
+                <h4 class="fw-bold mb-3 text-success"><i class="bi bi-calendar-check-fill me-2"></i>Assign Waste Pickups</h4>
+                
+                <div th:if="${pendingPickups.isEmpty()}" class="text-center py-4">
+                    <i class="bi bi-emoji-smile text-success fs-1"></i>
+                    <p class="text-secondary mt-2 m-0">No pending pickups require assignment.</p>
+                </div>
+
+                <div th:each="pickup : ${pendingPickups}" class="border rounded-3 p-3 mb-3 bg-light bg-opacity-70">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                        <div>
+                            <span class="badge bg-success bg-opacity-10 text-success text-uppercase small" th:text="${pickup.wasteType}">RECYCLABLE</span>
+                            <span class="text-muted small ms-2" th:text="${'Requested: ' + #temporals.format(pickup.requestedDate, 'yyyy-MM-dd')}">Date</span>
+                            <p class="fw-bold text-dark m-0 mt-1" th:text="${pickup.pickupAddress}">Address</p>
+                            <p class="small text-secondary m-0" th:text="${'Description: ' + (pickup.notes != null ? pickup.notes : 'None')}"></p>
+                        </div>
+                        <span class="badge bg-warning text-dark">PENDING</span>
+                    </div>
+
+                    <form th:action="@{/admin/pickup/{id}/assign(id=${pickup.id})}" method="post" class="row g-2 align-items-end pt-2 border-top">
+                        <div class="col-md-5">
+                            <label class="form-label small fw-semibold text-secondary mb-1">Select Crew</label>
+                            <select name="staffId" class="form-select form-select-sm" required>
+                                <option value="" disabled selected>Choose Staff...</option>
+                                <option th:each="staff : ${staffMembers}" th:value="${staff.id}" th:text="${staff.name}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-secondary mb-1">Scheduled Date</label>
+                            <input type="date" name="scheduledDate" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-eco btn-sm w-100 py-1"><i class="bi bi-send-plus-fill me-1"></i>Schedule</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card card-eco p-4 shadow-sm border-0">
+                <h4 class="fw-bold mb-3 text-success"><i class="bi bi-shield-fill-exclamation me-2"></i>Delegate Unresolved Complaints</h4>
+                
+                <div th:if="${unresolvedIssues.isEmpty()}" class="text-center py-4">
+                    <i class="bi bi-check-circle text-success fs-1"></i>
+                    <p class="text-secondary mt-2 m-0">All issues and complaints have been resolved!</p>
+                </div>
+
+                <div th:each="issue : ${unresolvedIssues}" class="border rounded-3 p-3 mb-3 bg-light bg-opacity-70">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                        <div>
+                            <span class="badge bg-danger bg-opacity-10 text-danger text-uppercase small" th:text="${#strings.replace(issue.issueType, '_', ' ')}">OVERFILLED_BIN</span>
+                            <span class="text-muted small ms-2" th:text="${'Reported: ' + #temporals.format(issue.reportedDate, 'yyyy-MM-dd')}">Date</span>
+                            <p class="fw-bold text-dark m-0 mt-1" th:text="${issue.location}">Location</p>
+                            <p class="small text-secondary m-0" th:text="${issue.description}">Description</p>
+                        </div>
+                        <div>
+                            <span th:if="${issue.status.name() == 'REPORTED'}" class="badge bg-warning text-dark">UNASSIGNED</span>
+                            <span th:if="${issue.status.name() == 'INVESTIGATING'}" class="badge bg-info text-dark" th:text="${'ASSIGNED TO ' + issue.assignedStaff.name}">INVESTIGATING</span>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/admin/issue/{id}/assign(id=${issue.id})}" method="post" class="row g-2 align-items-end pt-2 border-top">
+                        <div class="col-md-8">
+                            <label class="form-label small fw-semibold text-secondary mb-1">Assign Collector</label>
+                            <select name="staffId" class="form-select form-select-sm" required>
+                                <option value="" disabled selected>Choose Staff...</option>
+                                <option th:each="staff : ${staffMembers}" th:value="${staff.id}" th:text="${staff.name}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-eco btn-sm w-100 py-1"><i class="bi bi-person-plus-fill me-1"></i>Assign Crew</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card card-eco p-4 shadow-sm border-0">
+                <h4 class="fw-bold mb-3 text-success"><i class="bi bi-megaphone-fill me-2"></i>Broadcast Announcement</h4>
+                <p class="text-secondary small mb-3">Send dynamic tips, alerts, or segregation guidelines to all citizen dashboards instantly.</p>
+                
+                <form th:action="@{/admin/broadcast}" method="post">
+                    <div class="mb-3">
+                        <label for="broadcastTitle" class="form-label small fw-semibold text-secondary">Announcement Title</label>
+                        <input type="text" class="form-control form-control-sm" name="title" id="broadcastTitle" placeholder="e.g. Segregation guidelines..." required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="broadcastContent" class="form-label small fw-semibold text-secondary">Message Content</label>
+                        <textarea class="form-control form-control-sm" name="content" id="broadcastContent" rows="4" placeholder="Type instructions or details here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-eco btn-sm w-100 py-2"><i class="bi bi-broadcast-pin me-2"></i>Broadcast Announcement</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

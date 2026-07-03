@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::main})}">
+<body>
+<main>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card card-eco p-4">
+                <div class="mb-3">
+                    <a th:href="@{/citizen/dashboard}" class="text-success text-decoration-none small fw-semibold">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+                <h3 class="fw-bold text-success mb-3"><i class="bi bi-calendar-plus me-2"></i>Request Waste Pickup</h3>
+                <p class="text-secondary small mb-4">Fill in the details below to request a special recycling or bulk waste pickup at your address.</p>
+
+                <form th:action="@{/citizen/request}" th:object="${pickupRequest}" method="post">
+                    
+                    <div class="mb-3">
+                        <label for="wasteType" class="form-label small fw-semibold text-secondary">Waste Classification</label>
+                        <select class="form-select" id="wasteType" th:field="*{wasteType}" required>
+                            <option value="" disabled selected>Select waste type...</option>
+                            <option th:each="type : ${wasteTypes}" th:value="${type}" th:text="${type}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="pickupAddress" class="form-label small fw-semibold text-secondary">Pickup Address</label>
+                        <textarea class="form-control" id="pickupAddress" th:field="*{pickupAddress}" rows="3" placeholder="Enter your full collection location address" required></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="notes" class="form-label small fw-semibold text-secondary">Items Description / Notes (Optional)</label>
+                        <textarea class="form-control" id="notes" th:field="*{notes}" rows="2" placeholder="e.g., 3 old paint cans, 1 wooden table, etc."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-eco w-100 py-2">Submit Pickup Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

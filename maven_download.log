@@ -1,0 +1,88 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260703180859
+Username: HARI\hari2
+RunAs User: HARI\hari2
+Configuration Name: 
+Machine: HARI (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -Command Start-Transcript -Path 'maven_download.log';  = 'https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.zip'; Write-Output 'Downloading Maven...'; Invoke-WebRequest -Uri  -OutFile 'maven.zip'; Write-Output 'Extracting Maven...'; Expand-Archive -Path 'maven.zip' -DestinationPath 'maven'; Remove-Item 'maven.zip'; Write-Output 'Maven setup complete.'; Stop-Transcript
+Process ID: 32704
+PSVersion: 5.1.26100.8655
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.8655
+BuildVersion: 10.0.26100.8655
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is maven_download.log
+= : The term '=' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the 
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:47
++ Start-Transcript -Path 'maven_download.log';  = 'https://archive.apac ...
++                                               ~
+    + CategoryInfo          : ObjectNotFound: (=:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+= : The term '=' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:47
++ Start-Transcript -Path 'maven_download.log';  = 'https://archive.apac ...
++                                               ~
+    + CategoryInfo          : ObjectNotFound: (=:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+Downloading Maven...
+PS>TerminatingError(Invoke-WebRequest): "Missing an argument for parameter 'Uri'. Specify a parameter of type 'System.Uri' and try again."
+Invoke-WebRequest : Missing an argument for parameter 'Uri'. Specify a parameter of type 'System.Uri' and try again.
+At line:1 char:195
++ ... ; Write-Output 'Downloading Maven...'; Invoke-WebRequest -Uri  -OutFi ...
++                                                              ~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Invoke-WebRequest], ParameterBindingException
+    + FullyQualifiedErrorId : MissingArgument,Microsoft.PowerShell.Commands.InvokeWebRequestCommand
+Invoke-WebRequest : Missing an argument for parameter 'Uri'. Specify a parameter of type 'System.Uri' and try again.
+At line:1 char:195
++ ... ; Write-Output 'Downloading Maven...'; Invoke-WebRequest -Uri  -OutFi ...
++                                                              ~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Invoke-WebRequest], ParameterBindingException
+    + FullyQualifiedErrorId : MissingArgument,Microsoft.PowerShell.Commands.InvokeWebRequestCommand
+
+Extracting Maven...
+PS>TerminatingError(Resolve-Path): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Cannot find path 'C:\Users\hari2\OneDrive\Desktop\Antigravity_Java_Project\maven.zip' because it does not exist."
+PS>TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(Expand-Archive): "The path 'maven.zip' either does not exist or is not a valid file system path."
+Expand-Archive : The path 'maven.zip' either does not exist or is not a valid file system path.
+At line:1 char:259
++ ...  Maven...'; Expand-Archive -Path 'maven.zip' -DestinationPath 'maven' ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (maven.zip:String) [Expand-Archive], InvalidOperationException
+    + FullyQualifiedErrorId : ArchiveCmdletPathNotFound,Expand-Archive
+Expand-Archive : The path 'maven.zip' either does not exist or is not a valid file system path.
+At line:1 char:259
++ ...  Maven...'; Expand-Archive -Path 'maven.zip' -DestinationPath 'maven' ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (maven.zip:String) [Expand-Archive], InvalidOperationException
+    + FullyQualifiedErrorId : ArchiveCmdletPathNotFound,Expand-Archive
+
+Remove-Item : Cannot find path 'C:\Users\hari2\OneDrive\Desktop\Antigravity_Java_Project\maven.zip' because it does not 
+exist.
+At line:1 char:318
++ ... 'maven.zip' -DestinationPath 'maven'; Remove-Item 'maven.zip'; Write- ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\hari2\...oject\maven.zip:String) [Remove-Item], 
+ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.RemoveItemCommand
+Remove-Item : Cannot find path 'C:\Users\hari2\OneDrive\Desktop\Antigravity_Java_Project\maven.zip' because it does
+not exist.
+At line:1 char:318
++ ... 'maven.zip' -DestinationPath 'maven'; Remove-Item 'maven.zip'; Write- ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\hari2\...oject\maven.zip:String) [Remove-Item], ItemNotFoundEx
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.RemoveItemCommand
+
+Maven setup complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260703180900
+**********************
