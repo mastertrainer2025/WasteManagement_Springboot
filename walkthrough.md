@@ -31,19 +31,21 @@ We created a custom vanilla Java Spring Boot application targeting Java 21+ with
 
 ## 🧪 Verification Plan
 
-The application was compiled using Maven and is currently running as a background task. 
+The application was compiled using Maven and is currently running as a background task.
 
 ### Local URL
+
 Open your browser to: **[http://localhost:8080/](http://localhost:8080/)**
 
 ### Seeded Demo Accounts
-- **Municipality Administrator**: 
+
+- **Municipality Administrator**:
   - Username: `admin@waste.com`
   - Password: `admin123`
-- **Citizen (Resident)**: 
+- **Citizen (Resident)**:
   - Username: `citizen@waste.com`
   - Password: `citizen123`
-- **Collection Staff**: 
+- **Collection Staff**:
   - Username: `staff@waste.com`
   - Password: `staff123`
 
@@ -68,3 +70,25 @@ Open your browser to: **[http://localhost:8080/](http://localhost:8080/)**
    - Verify that the task status updates to "COMPLETED".
 4. **Validation**:
    - Log back in as Citizen and check the completed pickup to view the verification image and collection notes.
+
+## Problem Statement
+
+- **Context:** Cities need an efficient, transparent system to manage household and public-waste services, track citizen reports, and coordinate field operations.
+- **Primary Goal:** Build a web-based Waste Management Portal that lets citizens report issues and request pickups, enables staff to manage and schedule collections, and gives administrators reporting and route-management tools.
+- **Users & Roles:** Citizens (report/request), Staff (work orders, pickups), Admins (user management, routes, reports), optionally Municipal Supervisors (KPIs, approvals).
+- **Core Features:**
+  - Citizen registration, login, and profile management.
+  - Issue reporting with photos, location, and priority; request for pickups.
+  - Role-based dashboards: citizen, staff, admin.
+  - Work-order creation, assignment, status updates, and history.
+  - Route planning/assignment and schedule management for pickups.
+  - Reporting and analytics (collections, response times, open issues).
+  - Email/SMS notifications for status changes and confirmations.
+- **Non-functional Requirements:** Secure authentication and role-based access; responsive UI; persistent storage (relational DB); RESTful API endpoints; audit logging; basic scalability to handle city workloads.
+- **Constraints & Tech Stack:** Java + Spring (existing Maven project), server-side templating and static assets (HTML/CSS/JS), Maven build, relational DB (e.g., MySQL/Postgres), deployable on standard JVM hosts.
+- **Success Criteria:** Citizens can submit and track reports; staff can view/complete assigned work orders; admins can generate reports and update routes; average response time and resolution metrics are trackable.
+- **Acceptance Tests (high-level):**
+  - Citizen can register, submit an issue with photo/location, and receive status updates.
+  - Staff can claim/complete work orders and log pickups.
+  - Admin can create routes, view reports, and see system audit logs.
+  - System builds via `mvn package` and persists data across restarts.
