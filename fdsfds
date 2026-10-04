@@ -1,0 +1,143 @@
+Waste Collection & Recycling Management Portal 
+Problem Statement 
+Urban areas generate a significant amount of waste daily, including household, commercial, 
+and industrial waste. Managing this waste efficiently is a major challenge for municipalities 
+and private waste management agencies. In many cities, waste collection and recycling 
+processes are still partially manual, fragmented, or poorly coordinated. 
+Citizens often lack awareness or tools to properly dispose of waste, while authorities 
+struggle with tracking collection activities, monitoring staff performance, and ensuring 
+proper recycling practices. 
+Current Challenges 
+Lack of Centralized System 
+Waste collection data is often maintained across different systems, leading to inefficiency, 
+duplication, and data loss. 
+Inefficient Waste Collection Scheduling 
+Manual planning of collection routes leads to missed pickups, overlapping routes, and 
+increased fuel costs. 
+Limited Citizen Engagement 
+Residents do not have a proper platform to report uncollected waste, request pickups, or 
+track complaint status. 
+Poor Monitoring of Waste Segregation 
+There is minimal tracking of whether waste is properly segregated (dry, wet, recyclable), 
+reducing recycling efficiency. 
+Delay in Issue Resolution 
+Complaints regarding missed collections or overflowing bins take time to resolve due to a 
+lack of structured workflow. 
+Lack of Transparency 
+Citizens and administrators cannot easily track collection status, recycling rates, or 
+operational performance. 
+Inefficient Data Analysis 
+Authorities struggle to generate insights such as waste volume trends, recycling efficiency, 
+and area-wise performance. 
+Security and Data Integrity Issues 
+Existing systems may lack proper user authentication, making data vulnerable to 
+unauthorized access. 
+Need for the Proposed System 
+To address these issues, there is a need for a web-based and/or mobile-based Waste 
+Collection & Recycling Management Portal that: 
+• Centralizes all waste-related data 
+• Automates scheduling and tracking 
+• Increases citizen participation 
+• Improves recycling efficiency 
+• Ensures transparency and accountability 
+Proposed Solution 
+The Waste Collection & Recycling Management Portal will be a role-based system with the 
+following core users: 
+Citizens 
+• Register and log in 
+• Request waste pickup 
+• Report uncollected waste or issues 
+• Track complaint/request status 
+• Get awareness notifications on waste segregation 
+Collection Staff 
+• View assigned routes and schedules 
+• Update collection status 
+• Report issues (blocked roads, overfilled bins) 
+• Upload proof (images, notes) 
+Administrators (Municipality / Management) 
+• Manage users and roles 
+• Assign routes and schedules 
+• Monitor real-time operations 
+• Track complaints and resolutions 
+• Generate analytical reports 
+System Context Diagram (High-Level View) 
+External Entities: 
+• Citizens 
+• Collection Staff 
+• Admin/Municipal Authority 
+System: Waste Collection & Recycling Management Portal 
+Interactions: 
+• Citizens → Submit requests, complaints 
+• Staff → Update collection status 
+• Admin → Manage, monitor, analyze 
+Use Case Diagram (Functional Scope) 
+Citizen Use Cases 
+• Register / Login 
+• Submit Pickup Request 
+• Report Complaint 
+• Track Status 
+• Receive Notifications 
+Staff Use Cases 
+• Login 
+• View Assigned Tasks 
+• Update Collection Status 
+• Upload Proof 
+Admin Use Cases 
+• Manage Users 
+• Assign Routes 
+• Monitor Collection 
+• View Reports 
+• Resolve Complaints 
+Functional Flow Diagram (Waste Lifecycle) 
+1. Citizen submits waste pickup request / complaint 
+2. System logs and categorizes request 
+3. Admin assigns task to collection staff 
+4. Collection staff performs pickup 
+5. Staff updates status (Completed / Pending) 
+6. System notifies citizen 
+7. Data stored for reporting & analysis 
+System Architecture Diagram 
+Frontend 
+• Web Application (React / Angular) 
+• Mobile App (optional) 
+Backend 
+• Application Server developed using Java 
+• REST APIs 
+The backend logic, business rules, and REST API services will be implemented using Java to 
+ensure reliability, scalability, and maintainability. 
+Database 
+• Centralized Database using MySQL 
+• Stores users, waste requests, collection logs, reports 
+MySQL will be used to store and manage user records, waste pickup requests, complaints, 
+collection schedules, route details, status updates, and generated reports. 
+Integration Components 
+• Notification System (Email/SMS) 
+• GPS/Route Optimization (optional) 
+DFD (Data Flow Diagram) 
+Level 0 (Context Level) 
+• Citizens → Requests/Complaints → System 
+• System → Updates/Notifications → Citizens 
+• Admin ↔ System (management & monitoring) 
+• Staff ↔ System (task execution updates) 
+ER Diagram (Entities & Relationships) 
+Entities 
+• User (Citizen, Staff, Admin) 
+• Waste Request 
+• Complaint 
+• Collection Schedule 
+• Route 
+• Report 
+Relationships 
+• User creates Waste Request 
+• Admin assigns Schedule to Staff 
+• Staff executes Collection 
+• System generates Reports 
+Conclusion 
+The Waste Collection & Recycling Management Portal will modernize waste management 
+operations by: 
+• Improving efficiency 
+• Ending transparency 
+• Promoting recycling awareness 
+• Enabling data-driven decision making 
+This system will ultimately contribute to cleaner cities and sustainable waste management 
+practices. 
